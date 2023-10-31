@@ -32,11 +32,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        return User::create([
+        $request->validate([
+            'name' => 'required|string|min:5',
+            'email' => 'required|email',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',      // must contain at least one lowercase letter
+                'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                'regex:/[0-9]/',      // must contain at least one digit
+                'regex:/[@$!%*#?&]/',
+            ],
+            'repeat_password' => 'same:password'
+        ]);
+
+
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        return redirect()->route("users.index");
     }
 
     /**
@@ -44,7 +62,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return $user;
+        return view("pages.users.show")->with("user", $user);
     }
 
     /**

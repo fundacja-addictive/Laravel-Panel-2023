@@ -1,9 +1,11 @@
-<!DOCTYPE html>
+@extends("page")
 
-<body>
+@section("content")
     <a href="{{ route('users.create') }}">Create user</a>
 
-    <table>
+    <div class="container row">
+        <div class="col-6">
+        <table class="table">
         <thead>
             <th>Name</th>
             <th>Email</th>
@@ -15,4 +17,11 @@
         </tr>
         @endforeach
     </table>
-</body>
+        </div>
+        <div class="col-6"></div>
+    </div>
+
+
+    
+
+@endsection
